@@ -8,5 +8,7 @@ import (
 
 // Ping for health status check returns 200
 func Ping(c *gin.Context) {
-	c.String(http.StatusOK, "pong")
+	c.JSON(http.StatusOK, gin.H{
+		"message": "pong",
+	})
 }
