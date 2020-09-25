@@ -1,9 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,26 +14,25 @@ func GetPark(c *gin.Context) {
 
 func CreatePark(c *gin.Context) {
 	var park parks.Park
-	bytes, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		// TODO: handle error
+	if err := c.ShouldBindJSON(&park); err != nil {
+		// TODO: handle bad request error
 		return
 	}
-	if err := json.Unmarshal(bytes, &park); err != nil {
-		// TODO: handle error
-		return
-	}
+	// bytes, err := ioutil.ReadAll(c.Request.Body)
+	// if err != nil {
+	// 	// TODO: handle error
+	// 	return
+	// }
+	// if err := json.Unmarshal(bytes, &park); err != nil {
+	// 	// TODO: handle error
+	// 	return
+	// }
 
 	result, saveError := services.CreatePark(park)
 	if saveError != nil {
 		// TODO: handle create park error
 		return
 	}
-	// spew.Dump
-	fmt.Printf("+++> park: %+v\n", park)
-	fmt.Printf("+++> error: %+v\n", err)
-	fmt.Printf("+++> bytes: %+v\n", string(bytes))
-	// c.String(http.StatusNotImplemented, "implement CreateParks")
 	c.JSON(http.StatusCreated, result)
 }
 
