@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/shin888shin/parks/domain/parks"
 	"github.com/shin888shin/parks/services"
+	"github.com/shin888shin/parks/utils/errors"
 )
 
 func GetPark(c *gin.Context) {
@@ -15,22 +16,13 @@ func GetPark(c *gin.Context) {
 func CreatePark(c *gin.Context) {
 	var park parks.Park
 	if err := c.ShouldBindJSON(&park); err != nil {
-		// TODO: handle bad request error
+		restErr := errors.NewBadRequestErr("invalid json body")
+		c.JSON(restErr.Status, restErr)
 		return
 	}
-	// bytes, err := ioutil.ReadAll(c.Request.Body)
-	// if err != nil {
-	// 	// TODO: handle error
-	// 	return
-	// }
-	// if err := json.Unmarshal(bytes, &park); err != nil {
-	// 	// TODO: handle error
-	// 	return
-	// }
-
-	result, saveError := services.CreatePark(park)
-	if saveError != nil {
-		// TODO: handle create park error
+	result, saveErr := services.CreatePark(park)
+	if saveErr != nil {
+		c.JSON(saveErr.Status, saveErr)
 		return
 	}
 	c.JSON(http.StatusCreated, result)
