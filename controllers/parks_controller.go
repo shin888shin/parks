@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/shin888shin/parks/domain/parks"
@@ -10,7 +11,19 @@ import (
 )
 
 func GetPark(c *gin.Context) {
-	c.String(http.StatusNotImplemented, "implement GetPark")
+	parkID, err := strconv.ParseInt(c.Param("park_id"), 10, 64)
+	if err != nil {
+		getErr := errors.NewBadRequestErr("park id error")
+		c.JSON(getErr.Status, getErr)
+		return
+	}
+
+	park, getErr := services.GetPark(parkID)
+	if getErr != nil {
+		c.JSON(getErr.Status, getErr)
+		return
+	}
+	c.JSON(http.StatusOK, park)
 }
 
 func CreatePark(c *gin.Context) {
