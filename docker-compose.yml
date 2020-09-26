@@ -1,0 +1,28 @@
+version: '3.8'
+
+# cd /Users/joel/Documents/projects/parks
+# docker-compose up --build
+# http://localhost:8082/
+services:
+  api:
+    build:
+      context: .
+      # args:
+      #   app_env: ${APP_ENV}
+    # depends_on:
+    #   - db
+    restart: always
+    volumes:
+      - .:/go/src/github.com/shin888shin/parks
+    ports:
+      - "8082:8082"
+    environment:
+      - DEBUG=1
+    # links:
+    #   - db
+    networks:
+      - parks-network
+
+networks:
+  parks-network:
+    driver: bridge
