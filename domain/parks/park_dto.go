@@ -11,6 +11,7 @@ type Park struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Location    string `json:"location"`
+	CreatedAt   string `json:"created_at"`
 }
 
 func (park *Park) Validate() *errors.RestErr {

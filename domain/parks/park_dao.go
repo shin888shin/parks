@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/shin888shin/parks/utils/date"
 	"github.com/shin888shin/parks/utils/errors"
 )
 
@@ -20,6 +21,7 @@ func (park *Park) Get() *errors.RestErr {
 	park.Name = result.Name
 	park.Description = result.Description
 	park.Location = result.Location
+	park.CreatedAt = result.CreatedAt
 	return nil
 }
 
@@ -32,6 +34,7 @@ func (park *Park) Save() *errors.RestErr {
 		return errors.NewBadRequestErr(fmt.Sprintf("park %d already exists", park.ID))
 	}
 
+	park.CreatedAt = date.GetNowString()
 	parksDB[park.ID] = park
 	return nil
 }
