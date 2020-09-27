@@ -10,10 +10,27 @@ import (
 
 var (
 	Client *sql.DB
+	// cfg    *config.Config
 )
 
 func init() {
 	var err error
+	// log.Println("+++> cfg 1")
+	// log.Println("+++> cfg 1")
+	// log.Println("+++> cfg 1")
+	// ggg, _ := config.ParseJsonFile("conf.json")
+	// cfg, err = config.ParseJsonFile("conf.json")
+	// log.Println("+++> cfg 2")
+	// log.Printf("+++> cfg 3 %+v\n", ggg.UString("mysql.dsn"))
+	// log.Println("+++> cfg 4")
+	// log.Println("+++> cfg 4")
+	// log.Println("+++> cfg 4")
+
+	// util.LogFatal(err)
+
+	// db, err = sqlx.Connect("mysql", cfg.UString("mysql.dsn"))
+	// util.LogFatal(err)
+
 	// dataSourceName := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8",
 	// 	"root", "root", "127.0.0.1:3306", "parks",
 	// )
@@ -25,6 +42,7 @@ func init() {
 	// Client, err = sql.Open("mysql", "root:@/parks")
 	// DB, err = sql.Open("mysql", "root:pasaribu@tcp(database.dev:3306)/shopee")
 	Client, err = sql.Open("mysql", "root:root@tcp(mysql_parks:3306)/parks")
+	// Client, err = sql.Open("mysql", cfg.UString("mysql.dsn"))
 	if err != nil {
 		panic(err)
 	}
