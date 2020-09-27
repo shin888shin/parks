@@ -9,8 +9,8 @@ services:
       context: .
       # args:
       #   app_env: ${APP_ENV}
-    # depends_on:
-    #   - db
+    depends_on:
+      - db
     restart: always
     volumes:
       - .:/go/src/github.com/shin888shin/parks
@@ -18,11 +18,32 @@ services:
       - "8082:8082"
     environment:
       - DEBUG=1
-    # links:
-    #   - db
+    links:
+      - db
+    networks:
+      - parks-network
+  db:
+    image: mysql:5.7.21
+    container_name: mysql_parks
+    volumes:
+      - parks_db:/var/lib/mysql
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: parks
+      MYSQL_USER: test
+      MYSQL_PASSWORD: root
     networks:
       - parks-network
 
 networks:
   parks-network:
     driver: bridge
+
+volumes:
+  parks_db:
+    driver: local
+    

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/shin888shin/parks/datasources/mysql/parks"
 	"github.com/shin888shin/parks/utils/date"
 	"github.com/shin888shin/parks/utils/errors"
 )
@@ -13,6 +14,9 @@ var (
 )
 
 func (park *Park) Get() *errors.RestErr {
+	if err := parks.Client.Ping(); err != nil {
+		panic(err)
+	}
 	result := parksDB[park.ID]
 	if result == nil {
 		return errors.NewNotFoundErr(fmt.Sprintf("park %d not found", park.ID))
