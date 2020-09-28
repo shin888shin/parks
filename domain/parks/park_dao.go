@@ -8,27 +8,26 @@ import (
 	"github.com/shin888shin/parks/utils/errors"
 )
 
-var (
-	parksDB = make(map[int64]*Park)
-)
-
 const (
 	queryInsertPark = "INSERT INTO parks(name, description, location, created_at) VALUES(?, ?, ?, ?);"
+	queryGetPark    = "SELECT id, name, description, location, created_at FROM parks WHERE id = ?;"
 )
 
 func (park *Park) Get() *errors.RestErr {
 	if err := parks.Client.Ping(); err != nil {
 		panic(err)
 	}
-	result := parksDB[park.ID]
-	if result == nil {
-		return errors.NewNotFoundErr(fmt.Sprintf("park %d not found", park.ID))
+	stmt, err := parks.Client.Prepare(queryGetPark)
+	if err != nil {
+		return errors.NewInternalServerErr(err.Error())
 	}
-	park.ID = result.ID
-	park.Name = result.Name
-	park.Description = result.Description
-	park.Location = result.Location
-	park.CreatedAt = result.CreatedAt
+	defer stmt.Close()
+	getResult := stmt.QueryRow(park.ID)
+	if err := getResult.Scan(&park.ID, &park.Name, &park.Description, &park.Location, &park.CreatedAt); err != nil {
+		fmt.Println(err)
+		return errors.NewInternalServerErr(fmt.Sprintf("error getting park %d: %s", park.ID, err.Error()))
+	}
+
 	return nil
 }
 

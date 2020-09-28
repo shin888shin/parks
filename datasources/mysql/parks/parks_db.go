@@ -41,7 +41,7 @@ func init() {
 	// Client, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/parks")
 	// Client, err = sql.Open("mysql", "root:@/parks")
 	// DB, err = sql.Open("mysql", "root:pasaribu@tcp(database.dev:3306)/shopee")
-	Client, err = sql.Open("mysql", "root:root@tcp(mysql_parks:3306)/parks")
+	Client, err = sql.Open("mysql", "root:root@tcp(mysql_parks:3306)/parks?parseTime=true")
 	// Client, err = sql.Open("mysql", cfg.UString("mysql.dsn"))
 	if err != nil {
 		panic(err)
