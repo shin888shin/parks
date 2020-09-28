@@ -2,7 +2,6 @@ package parks
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/shin888shin/parks/datasources/mysql/parks"
 	"github.com/shin888shin/parks/utils/date"
@@ -11,6 +10,10 @@ import (
 
 var (
 	parksDB = make(map[int64]*Park)
+)
+
+const (
+	queryInsertPark = "INSERT INTO parks(name, description, location, created_at) VALUES(?, ?, ?, ?);"
 )
 
 func (park *Park) Get() *errors.RestErr {
@@ -30,15 +33,28 @@ func (park *Park) Get() *errors.RestErr {
 }
 
 func (park *Park) Save() *errors.RestErr {
-	current := parksDB[park.ID]
-	if current != nil {
-		if strings.TrimSpace(strings.ToLower(current.Name)) == strings.TrimSpace(strings.ToLower(park.Name)) {
-			return errors.NewBadRequestErr(fmt.Sprintf("park with name %s already exists", park.Name))
-		}
-		return errors.NewBadRequestErr(fmt.Sprintf("park %d already exists", park.ID))
+	stmt, err := parks.Client.Prepare(queryInsertPark)
+	if err != nil {
+		return errors.NewInternalServerErr(err.Error())
+	}
+	defer stmt.Close()
+
+	park.CreatedAt = date.GetNowDatetime()
+
+	insertResult, err := stmt.Exec(park.Name, park.Description, park.Location, park.CreatedAt)
+	if err != nil {
+		// TODO: maybe turn on name uniqueness
+		// if strings.Contains(err.Error(), "name_UNIQUE") {
+		// 	return errors.NewBadRequestErr(fmt.Sprintf("name %s must be unique ", park.Name))
+		// }
+		return errors.NewInternalServerErr(fmt.Sprintf("error on save: %s", err.Error()))
 	}
 
-	park.CreatedAt = date.GetNowString()
-	parksDB[park.ID] = park
+	parkID, err := insertResult.LastInsertId()
+	if err != nil {
+		return errors.NewInternalServerErr(fmt.Sprintf("error on save: %s", err.Error()))
+	}
+
+	park.ID = parkID
 	return nil
 }

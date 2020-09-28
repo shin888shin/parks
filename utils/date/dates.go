@@ -13,3 +13,7 @@ func GetNow() time.Time {
 func GetNowString() string {
 	return GetNow().Format(defaultLayout)
 }
+
+func GetNowDatetime() time.Time {
+	return GetNow()
+}

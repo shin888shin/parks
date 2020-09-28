@@ -7,7 +7,7 @@ create table parks (
   name VARCHAR(100) NOT NULL,
   description VARCHAR(100) NOT NULL,
   location VARCHAR(100) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  created_at datetime DEFAULT NULL,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  
   PRIMARY KEY (id)
 );
