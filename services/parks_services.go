@@ -24,3 +24,19 @@ func CreatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
 	// return either a result or an error -- not both
 	return &park, nil
 }
+
+func UpdatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
+	current, err := GetPark(park.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	current.Name = park.Name
+	current.Description = park.Description
+	current.Location = park.Location
+
+	if err := current.Update(); err != nil {
+		return nil, err
+	}
+	return current, nil
+}

@@ -9,6 +9,7 @@ import (
 const (
 	queryInsertPark = "INSERT INTO parks(name, description, location, created_at) VALUES(?, ?, ?, ?);"
 	queryGetPark    = "SELECT id, name, description, location, created_at FROM parks WHERE id = ?;"
+	queryUpdatePark = "UPDATE parks SET name = ?, description = ?, location = ? WHERE id = ?;"
 )
 
 func (park *Park) Get() *errors.RestErr {
@@ -46,5 +47,21 @@ func (park *Park) Save() *errors.RestErr {
 	}
 
 	park.ID = parkID
+	return nil
+}
+
+func (park *Park) Update() *errors.RestErr {
+	stmt, err := parks.Client.Prepare(queryUpdatePark)
+	if err != nil {
+		return errors.NewInternalServerErr(err.Error())
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(park.Name, park.Description, park.Location, park.ID)
+
+	if err != nil {
+		return errors.ParseError(err)
+	}
+
 	return nil
 }
