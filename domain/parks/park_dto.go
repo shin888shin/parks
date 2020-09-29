@@ -16,6 +16,9 @@ type Park struct {
 }
 
 func (park *Park) Validate() *errors.RestErr {
+	park.Description = strings.TrimSpace(park.Description)
+	park.Location = strings.TrimSpace(park.Location)
+
 	park.Name = strings.TrimSpace(strings.ToLower(park.Name))
 	if park.Name == "" {
 		return errors.NewBadRequestErr("invalid name")
