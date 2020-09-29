@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/shin888shin/parks/domain/parks"
+	"github.com/shin888shin/parks/utils/date"
 	"github.com/shin888shin/parks/utils/errors"
 )
 
@@ -17,6 +18,7 @@ func CreatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
 	if err := park.Validate(); err != nil {
 		return nil, err
 	}
+	park.CreatedAt = date.GetNowDatetime()
 	if err := park.Save(); err != nil {
 		return nil, err
 	}
@@ -39,4 +41,9 @@ func UpdatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
 		return nil, err
 	}
 	return current, nil
+}
+
+func GetAllParks() ([]parks.Park, *errors.RestErr) {
+	dao := &parks.Park{}
+	return dao.GetAllParks()
 }

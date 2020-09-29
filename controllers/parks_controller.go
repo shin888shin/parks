@@ -64,6 +64,15 @@ func UpdatePark(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+func GetAllParks(c *gin.Context) {
+	parks, err := services.GetAllParks()
+	if err != nil {
+		c.JSON(err.Status, err)
+		return
+	}
+	c.JSON(http.StatusOK, parks)
+}
+
 // func SearchParks(c *gin.Context) {
 // 	c.String(http.StatusNotImplemented, "implement SearchParks")
 // }
