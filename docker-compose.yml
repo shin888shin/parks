@@ -14,6 +14,7 @@ services:
     restart: always
     volumes:
       - .:/go/src/github.com/shin888shin/parks
+      - ./conf.json:/root/conf.json
     ports:
       - "8082:8082"
     environment:

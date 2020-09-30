@@ -2,26 +2,56 @@ package parks
 
 import (
 	"database/sql"
+	"io/ioutil"
 	"log"
 
 	"github.com/federicoleon/bookstore_utils-go/logger"
 	"github.com/go-sql-driver/mysql"
+	"github.com/olebedev/config"
 )
 
 var (
 	Client *sql.DB
-	// cfg    *config.Config
+	cfg    *config.Config
 )
 
 func init() {
 	var err error
-	// log.Println("+++> cfg 1")
-	// log.Println("+++> cfg 1")
-	// log.Println("+++> cfg 1")
+	// var color string
+	log.Println("+++> cfg 1")
+	log.Println("+++> cfg 1")
+	log.Println("+++> cfg 1")
+
+	// dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// log.Printf("+++> cfg 1.01 dir: %+v\n", dir)
+
+	// data, err := ioutil.ReadFile("hello.txt")
+	// if err != nil {
+	// 	fmt.Println("File reading error", err)
+	// 	return
+	// }
+	// log.Println("+++> cfg 1.1")
+	// log.Printf("+++> cfg 1.2 hello: %+v\n", data)
 	// ggg, _ := config.ParseJsonFile("conf.json")
-	// cfg, err = config.ParseJsonFile("conf.json")
-	// log.Println("+++> cfg 2")
-	// log.Printf("+++> cfg 3 %+v\n", ggg.UString("mysql.dsn"))
+
+	file, err := ioutil.ReadFile("conf.json")
+	if err != nil {
+		panic(err)
+	}
+	log.Println("+++> cfg 2.1")
+	jsonString := string(file)
+	log.Println("+++> cfg 2.2")
+
+	cfg, err = config.ParseJson(jsonString)
+	log.Println("+++> cfg 2.3")
+	dsnStr, dsnErr := cfg.String("mysql.local.dsn")
+	if dsnErr != nil {
+		panic(err)
+	}
+	log.Printf("+++> cfg 2.4 dsnStr %+v\n", dsnStr)
 	// log.Println("+++> cfg 4")
 	// log.Println("+++> cfg 4")
 	// log.Println("+++> cfg 4")
@@ -41,7 +71,11 @@ func init() {
 	// Client, err = sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/parks")
 	// Client, err = sql.Open("mysql", "root:@/parks")
 	// DB, err = sql.Open("mysql", "root:pasaribu@tcp(database.dev:3306)/shopee")
-	Client, err = sql.Open("mysql", "root:root@tcp(mysql_parks:3306)/parks?parseTime=true")
+
+	// Client, err = sql.Open("mysql", "root:root@tcp(mysql_parks:3306)/parks?parseTime=true")
+	Client, err = sql.Open("mysql", dsnStr)
+	log.Println("+++> cfg 2.5 yay")
+
 	// Client, err = sql.Open("mysql", cfg.UString("mysql.dsn"))
 	if err != nil {
 		panic(err)

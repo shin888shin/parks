@@ -1,5 +1,7 @@
 {
   "mysql": {
-    "dsn": "user:password@tcp(127.0.0.1:3306)/mydatabase"
+    "local": {
+      "dsn": "user:password@tcp(<container-name>:3306)/mydatabase?parseTime=true"
+    }
   }
 }
