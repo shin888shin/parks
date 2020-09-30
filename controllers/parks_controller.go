@@ -18,7 +18,7 @@ func GetPark(c *gin.Context) {
 		return
 	}
 
-	park, getErr := services.GetPark(parkID)
+	park, getErr := services.ParksService.GetPark(parkID)
 	if getErr != nil {
 		c.JSON(getErr.Status, getErr)
 		return
@@ -33,7 +33,7 @@ func CreatePark(c *gin.Context) {
 		c.JSON(restErr.Status, restErr)
 		return
 	}
-	result, saveErr := services.CreatePark(park)
+	result, saveErr := services.ParksService.CreatePark(park)
 	if saveErr != nil {
 		c.JSON(saveErr.Status, saveErr)
 		return
@@ -56,7 +56,7 @@ func UpdatePark(c *gin.Context) {
 		return
 	}
 	park.ID = parkID
-	result, updateErr := services.UpdatePark(park)
+	result, updateErr := services.ParksService.UpdatePark(park)
 	if updateErr != nil {
 		c.JSON(updateErr.Status, updateErr)
 		return
@@ -65,7 +65,7 @@ func UpdatePark(c *gin.Context) {
 }
 
 func GetAllParks(c *gin.Context) {
-	parks, err := services.GetAllParks()
+	parks, err := services.ParksService.GetAllParks()
 	if err != nil {
 		c.JSON(err.Status, err)
 		return

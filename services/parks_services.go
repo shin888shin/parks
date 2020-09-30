@@ -6,7 +6,21 @@ import (
 	"github.com/shin888shin/parks/utils/errors"
 )
 
-func GetPark(parkID int64) (*parks.Park, *errors.RestErr) {
+var (
+	ParksService parksServiceInterface = &parksService{}
+)
+
+type parksService struct {
+}
+
+type parksServiceInterface interface {
+	GetPark(int64) (*parks.Park, *errors.RestErr)
+	CreatePark(parks.Park) (*parks.Park, *errors.RestErr)
+	UpdatePark(parks.Park) (*parks.Park, *errors.RestErr)
+	GetAllParks() ([]parks.Park, *errors.RestErr)
+}
+
+func (ps *parksService) GetPark(parkID int64) (*parks.Park, *errors.RestErr) {
 	result := &parks.Park{ID: parkID}
 	if err := result.Get(); err != nil {
 		return nil, err
@@ -14,7 +28,7 @@ func GetPark(parkID int64) (*parks.Park, *errors.RestErr) {
 	return result, nil
 }
 
-func CreatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
+func (ps *parksService) CreatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
 	if err := park.Validate(); err != nil {
 		return nil, err
 	}
@@ -27,8 +41,8 @@ func CreatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
 	return &park, nil
 }
 
-func UpdatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
-	current, err := GetPark(park.ID)
+func (ps *parksService) UpdatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
+	current, err := ps.GetPark(park.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +57,7 @@ func UpdatePark(park parks.Park) (*parks.Park, *errors.RestErr) {
 	return current, nil
 }
 
-func GetAllParks() ([]parks.Park, *errors.RestErr) {
+func (ps *parksService) GetAllParks() ([]parks.Park, *errors.RestErr) {
 	dao := &parks.Park{}
 	return dao.GetAllParks()
 }
