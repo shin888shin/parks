@@ -20,28 +20,32 @@ services:
       - "8082:8082"
     environment:
       DEBUG: 1
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_HOST: db
+      MYSQL_ROOT_PASSWORD: rootrootroot
       MYSQL_DATABASE: parks
       MYSQL_USER: test
-      MYSQL_PASSWORD: root
+      MYSQL_PASSWORD: rootrootroot
     links:
       - db
     networks:
       - parks-network
   db:
-    image: mysql:5.7.21
+    build:
+      context: db
+    # image: mysql:5.7.21
     container_name: mysql_parks
     volumes:
       - parks_db:/var/lib/mysql
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./db/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
     restart: always
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: rootrootroot
       MYSQL_DATABASE: parks
       MYSQL_USER: test
-      MYSQL_PASSWORD: root
+      MYSQL_PASSWORD: rootrootroot
     networks:
       - parks-network
 
