@@ -1,4 +1,4 @@
-create database parks;
+create database IF NOT EXISTS parks;
 
 DROP TABLE IF EXISTS parks;
 
