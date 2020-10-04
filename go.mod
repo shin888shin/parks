@@ -8,4 +8,5 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/olebedev/config v0.0.0-20190528211619-364964f3a8e4
+	github.com/stretchr/testify v1.5.1
 )

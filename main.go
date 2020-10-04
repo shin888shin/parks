@@ -7,11 +7,12 @@ import (
 
 func main() {
 	r := setupRouter()
-	app.MapUrls(r)
+	// app.MapUrls(r)
 	r.Run(":8082")
 }
 
 func setupRouter() *gin.Engine {
 	r := gin.Default()
+	app.MapUrls(r)
 	return r
 }
