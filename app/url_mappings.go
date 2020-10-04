@@ -4,6 +4,7 @@ import "github.com/shin888shin/parks/controllers"
 
 func mapUrls() {
 	r.GET("/ping", controllers.Ping)
+	r.GET("/foo", controllers.Foo)
 	// r.GET("/parks/search", controllers.SearchParks)
 	r.POST("/parks", controllers.CreatePark)
 	r.GET("/parks", controllers.GetAllParks)
