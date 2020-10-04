@@ -1,8 +1,11 @@
 package app
 
-import "github.com/shin888shin/parks/controllers"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/shin888shin/parks/controllers"
+)
 
-func mapUrls() {
+func MapUrls(r *gin.Engine) {
 	r.GET("/ping", controllers.Ping)
 	r.GET("/foo", controllers.Foo)
 	// r.GET("/parks/search", controllers.SearchParks)
