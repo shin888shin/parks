@@ -1,0 +1,60 @@
+version: '3.8'
+
+# cd /Users/joel/Documents/projects/parks
+# docker-compose up --build
+# http://localhost:8082/
+services:
+  api:
+    container_name: parks_api
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+      # args:
+      #   app_env: ${APP_ENV}
+    depends_on:
+      - db
+    restart: "no"
+    volumes:
+      - .:/go/src/github.com/shin888shin/parks
+      - ./conf.json:/root/conf.json
+    ports:
+      - "8082:8082"
+    environment:
+      DEBUG: 1
+      MYSQL_HOST: db
+      MYSQL_ROOT_PASSWORD: rootrootroot
+      MYSQL_DATABASE: parks
+      MYSQL_USER: test
+      MYSQL_PASSWORD: rootrootroot
+    links:
+      - db
+    networks:
+      - parks-test-network
+  db:
+    build:
+      context: db
+    # image: mysql:5.7.21
+    container_name: mysql_parks
+    volumes:
+      - parks_test_db:/var/lib/mysql
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./db/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+    restart: "no"
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: rootrootroot
+      MYSQL_DATABASE: parks
+      MYSQL_USER: test
+      MYSQL_PASSWORD: rootrootroot
+    networks:
+      - parks-test-network
+
+networks:
+  parks-test-network:
+    driver: bridge
+
+volumes:
+  parks_test_db:
+    driver: local
+    
