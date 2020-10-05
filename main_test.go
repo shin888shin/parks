@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -31,7 +32,13 @@ func TestParksRoute(t *testing.T) {
 
 	// fmt.Printf("+++> 0: %+v\n", *testFlag)
 	// fmt.Printf("+++> 1: %+v\n", w.Code)
-	// fmt.Printf("+++> 2: %+v\n", w.Body.String())
+	fmt.Println("++++++++++++++++++++++++++++++++++++++++")
+	fmt.Println("++++++++++++++++++++++++++++++++++++++++")
+	fmt.Println("++++++++++++++++++++++++++++++++++++++++")
+	fmt.Printf("+++> 2: %+v\n", w.Body.String())
+	fmt.Println("++++++++++++++++++++++++++++++++++++++++")
+	fmt.Println("++++++++++++++++++++++++++++++++++++++++")
+	fmt.Println("++++++++++++++++++++++++++++++++++++++++")
 
 	assert.Equal(t, 200, w.Code)
 	// fails
