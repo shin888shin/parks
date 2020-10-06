@@ -2,12 +2,14 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/shin888shin/parks/domain/parks"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -42,20 +44,36 @@ func TestParksRoute(t *testing.T) {
 
 	w := httptest.NewRecorder()
 
+	// CREATE /parks //////////////////////////////////////////////////////////
 	req, _ := http.NewRequest("POST", "/parks", bytes.NewBuffer(createJson))
 	router.ServeHTTP(w, req)
 	fmt.Printf("+++> CREATE: %+v\n", w.Body.String())
 	assert.Equal(t, 201, w.Code)
 
-	req, _ = http.NewRequest("PUT", "/parks", bytes.NewBuffer(updateJson))
+	// UPDATE /parks/1 ////////////////////////////////////////////////////////
+	req, _ = http.NewRequest("PUT", "/parks/1", bytes.NewBuffer(updateJson))
 	router.ServeHTTP(w, req)
 	fmt.Printf("+++> UPDATE: %+v\n", w.Body.String())
 	assert.Equal(t, 201, w.Code)
 
+	// LIST all parks /////////////////////////////////////////////////////////
 	req, _ = http.NewRequest("GET", "/parks", nil)
 	router.ServeHTTP(w, req)
-	fmt.Printf("+++> LIST: %+v\n", w.Body.String())
+	fmt.Printf("+++> LIST: %+v <+++\n", w.Body.String())
 	assert.Equal(t, 201, w.Code)
-	// fails
-	// assert.Equal(t, `{"message":"pong"}`, w.Body.String())
+
+	// GET parks/1 ////////////////////////////////////////////////////////////
+	var park parks.Park
+	req, _ = http.NewRequest("GET", "/parks/1", nil)
+	router.ServeHTTP(w, req)
+	fmt.Printf("+++> GET: %+v <+++\n", w.Body.String())
+	assert.Equal(t, 201, w.Code)
+
+	err := json.NewDecoder(w.Body).Decode(&park)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	// spew.Dump(park)
+	assert.Equal(t, int64(1), park.ID)
 }
