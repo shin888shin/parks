@@ -2,6 +2,8 @@ FROM golang:latest as builder
 WORKDIR /go/src/github.com/shin888shin/parks
 COPY . .
 # ENTRYPOINT ["go", "test", "-v", "./...", "-coverprofile", "cover.out"]
+# -location 'Los Angeles'
+# ENTRYPOINT ["go", "test", "-v", "./...", "-location", "Oslo"]
 ENTRYPOINT ["go", "test", "-v", "./..."]
 
 # docker build -t parks_tests:latest -f Dockerfile.test .
