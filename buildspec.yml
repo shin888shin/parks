@@ -1,0 +1,68 @@
+version: 0.2
+
+env:
+  variables:
+    JAVA_HOME: "/usr/lib/jvm/java-8-openjdk-amd64"
+    COLOR: "purple"
+  parameter-store:
+    LOGIN_PASSWORD: /CodeBuild/dockerLoginPassword
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+      - aws --version
+      - apt-get update -y
+      - echo Install ended
+    finally:
+      - echo This always runs - install finally
+  pre_build:
+    commands:
+      - echo Entered the pre_build phase...
+      - REPOSITORY_URI=320502943329.dkr.ecr.us-east-1.amazonaws.com/parks
+      - echo $REPOSITORY_URI
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo $CODEBUILD_SOURCE_REPO_URL
+      - echo $CODEBUILD_BUILD_ID
+      - echo Pre build ended
+    finally:
+      - echo This always runs - pre_build finally
+  build:
+    commands:
+      - echo Entered the build phase...
+      - echo Build started on `date`
+      - echo Build ended
+    finally:
+      - echo This always runs - build finally
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
+
+# reports:
+#   arn:aws:codebuild:your-region:your-aws-account-id:report-group/report-group-name-1:
+#     files:
+#       - "**/*"
+#     base-directory: 'target/tests/reports'
+#     discard-paths: no
+#   reportGroupCucumberJson:
+#     files:
+#       - 'cucumber/target/cucumber-tests.xml'
+#     discard-paths: yes
+#     file-format: CUCUMBERJSON # default is JUNITXML
+# artifacts:
+#   files:
+#     - target/messageUtil-1.0.jar
+#   discard-paths: yes
+#   secondary-artifacts:
+#     artifact1:
+#       files:
+#         - target/artifact-1.0.jar
+#       discard-paths: yes
+#     artifact2:
+#       files:
+#         - target/artifact-2.0.jar
+#       discard-paths: yes
+# cache:
+#   paths:
+#     - '/root/.m2/**/*'
