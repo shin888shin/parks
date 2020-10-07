@@ -44,28 +44,28 @@ func TestParksRoute(t *testing.T) {
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("POST", "/parks", bytes.NewBuffer(createJson))
 	router.ServeHTTP(w, req)
-	// fmt.Printf("+++> CREATE: %+v\n", w.Body.String())
+	fmt.Printf("+++> CREATE: %+v\n", w.Body.String())
 	assert.Equal(t, 201, w.Code)
 
 	// UPDATE /parks/1 ////////////////////////////////////////////////////////
 	w = httptest.NewRecorder()
 	req, _ = http.NewRequest("PUT", "/parks/1", bytes.NewBuffer(updateJson))
 	router.ServeHTTP(w, req)
-	// fmt.Printf("+++> UPDATE: %+v\n", w.Body.String())
+	fmt.Printf("+++> UPDATE: %+v\n", w.Body.String())
 	assert.Equal(t, 200, w.Code)
 
 	// LIST all parks /////////////////////////////////////////////////////////
 	w = httptest.NewRecorder()
 	req, _ = http.NewRequest("GET", "/parks", nil)
 	router.ServeHTTP(w, req)
-	// fmt.Printf("+++> LIST: %+v <+++\n", w.Body.String())
+	fmt.Printf("+++> LIST: %+v <+++\n", w.Body.String())
 	assert.Equal(t, 200, w.Code)
 
 	// GET parks/1 ////////////////////////////////////////////////////////////
 	w = httptest.NewRecorder()
 	req, _ = http.NewRequest("GET", "/parks/1", nil)
 	router.ServeHTTP(w, req)
-	// fmt.Printf("+++> GET: %+v <+++\n", w.Body.String())
+	fmt.Printf("+++> GET: %+v <+++\n", w.Body.String())
 	assert.Equal(t, 200, w.Code)
 
 	// var park parks.Park
