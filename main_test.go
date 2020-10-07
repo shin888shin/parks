@@ -2,14 +2,12 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/shin888shin/parks/domain/parks"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -42,38 +40,40 @@ func TestParksRoute(t *testing.T) {
 			"description": "bbb",
 			"location": "ccc"}`)
 
-	w := httptest.NewRecorder()
-
 	// CREATE /parks //////////////////////////////////////////////////////////
+	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("POST", "/parks", bytes.NewBuffer(createJson))
 	router.ServeHTTP(w, req)
-	fmt.Printf("+++> CREATE: %+v\n", w.Body.String())
+	// fmt.Printf("+++> CREATE: %+v\n", w.Body.String())
 	assert.Equal(t, 201, w.Code)
 
 	// UPDATE /parks/1 ////////////////////////////////////////////////////////
+	w = httptest.NewRecorder()
 	req, _ = http.NewRequest("PUT", "/parks/1", bytes.NewBuffer(updateJson))
 	router.ServeHTTP(w, req)
-	fmt.Printf("+++> UPDATE: %+v\n", w.Body.String())
-	assert.Equal(t, 201, w.Code)
+	// fmt.Printf("+++> UPDATE: %+v\n", w.Body.String())
+	assert.Equal(t, 200, w.Code)
 
 	// LIST all parks /////////////////////////////////////////////////////////
+	w = httptest.NewRecorder()
 	req, _ = http.NewRequest("GET", "/parks", nil)
 	router.ServeHTTP(w, req)
-	fmt.Printf("+++> LIST: %+v <+++\n", w.Body.String())
-	assert.Equal(t, 201, w.Code)
+	// fmt.Printf("+++> LIST: %+v <+++\n", w.Body.String())
+	assert.Equal(t, 200, w.Code)
 
 	// GET parks/1 ////////////////////////////////////////////////////////////
-	var park parks.Park
+	w = httptest.NewRecorder()
 	req, _ = http.NewRequest("GET", "/parks/1", nil)
 	router.ServeHTTP(w, req)
-	fmt.Printf("+++> GET: %+v <+++\n", w.Body.String())
-	assert.Equal(t, 201, w.Code)
+	// fmt.Printf("+++> GET: %+v <+++\n", w.Body.String())
+	assert.Equal(t, 200, w.Code)
 
-	err := json.NewDecoder(w.Body).Decode(&park)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	// spew.Dump(park)
-	assert.Equal(t, int64(1), park.ID)
+	// var park parks.Park
+	// err := json.NewDecoder(w.Body).Decode(&park)
+	// if err != nil {
+	// 	http.Error(w, err.Error(), http.StatusBadRequest)
+	// 	return
+	// }
+	// // spew.Dump(park)
+	// assert.Equal(t, int64(1), park.ID)
 }
