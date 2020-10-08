@@ -16,6 +16,10 @@ phases:
   pre_build:
     commands:
       - echo Entered the pre_build phase...
+      - echo xxxxx 1
+      - echo $COLOR
+      - echo 'xxxxx 2'
+      - echo "xxxxx 3"
       # - REPOSITORY_URI=320502943329.dkr.ecr.us-east-1.amazonaws.com/parks
       # - echo $REPOSITORY_URI
       # - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
