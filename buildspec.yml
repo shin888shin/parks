@@ -21,7 +21,7 @@ phases:
       - echo "+++> 1"
       - echo "+++> AWS_DEFAULT_REGION - $AWS_DEFAULT_REGION"
       - echo "+++> 2"
-      - $(aws ecr get-login $AWS_DEFAULT_REGION --no-include-email)
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=320502943329.dkr.ecr.us-east-1.amazonaws.com/parks
       - echo "+++> REPOSITORY_URI - $REPOSITORY_URI"
       - echo "+++> CODEBUILD_RESOLVED_SOURCE_VERSION - $CODEBUILD_RESOLVED_SOURCE_VERSION"
