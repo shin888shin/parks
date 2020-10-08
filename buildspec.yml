@@ -40,6 +40,9 @@ phases:
     commands:
       - echo Entered the build phase...
       - echo Build started on `date`
+      - echo Building docker image
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
       - echo Build ended
     finally:
       - echo This always runs - build finally
@@ -47,31 +50,9 @@ phases:
     commands:
       - echo Entered the post_build phase...
       - echo Build completed on `date`
-
-# reports:
-#   arn:aws:codebuild:your-region:your-aws-account-id:report-group/report-group-name-1:
-#     files:
-#       - "**/*"
-#     base-directory: 'target/tests/reports'
-#     discard-paths: no
-#   reportGroupCucumberJson:
-#     files:
-#       - 'cucumber/target/cucumber-tests.xml'
-#     discard-paths: yes
-#     file-format: CUCUMBERJSON # default is JUNITXML
-# artifacts:
-#   files:
-#     - target/messageUtil-1.0.jar
-#   discard-paths: yes
-#   secondary-artifacts:
-#     artifact1:
-#       files:
-#         - target/artifact-1.0.jar
-#       discard-paths: yes
-#     artifact2:
-#       files:
-#         - target/artifact-2.0.jar
-#       discard-paths: yes
-# cache:
-#   paths:
-#     - '/root/.m2/**/*'
+      - echo Pushing the docker image
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - printf '[{"name":"parks-codebuild","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > image_output.json
+      - cat image_output.json
+      - echo Completed the post_build phase
