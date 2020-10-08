@@ -19,12 +19,11 @@ phases:
       - echo xxxxx 1
       - echo $COLOR
       - echo 'xxxxx 2'
-      - echo "xxxxx 3"
-      # - REPOSITORY_URI=320502943329.dkr.ecr.us-east-1.amazonaws.com/parks
-      # - echo $REPOSITORY_URI
-      # - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
-      # - echo $CODEBUILD_SOURCE_REPO_URL
-      # - echo $CODEBUILD_BUILD_ID
+      - REPOSITORY_URI=320502943329.dkr.ecr.us-east-1.amazonaws.com/parks
+      - echo $REPOSITORY_URI
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo $CODEBUILD_SOURCE_REPO_URL
+      - echo $CODEBUILD_BUILD_ID
       - echo Pre build ended
     finally:
       - echo This always runs - pre_build finally
