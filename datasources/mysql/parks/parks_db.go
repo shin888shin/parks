@@ -37,7 +37,7 @@ func init() {
 	} else {
 		log.Println("+++> running aws with port")
 		// dsnStr = "root:root@tcp(mysql_parks:3306)/parks?parseTime=true"
-		dsnStr = "test:rootrootroot@tcp(parks-db-identifier.cmitxh4pnb26.us-east-1.rds.amazonaws.com:3306)/parks?parseTime=true"
+		dsnStr = "test:rootrootroot@tcp(parks-db.cmitxh4pnb26.us-east-1.rds.amazonaws.com:3306)/parks?parseTime=true"
 	}
 
 	Client, err = sql.Open("mysql", dsnStr)
