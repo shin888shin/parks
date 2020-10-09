@@ -16,6 +16,6 @@ func Ping(c *gin.Context) {
 // Foo for debugging
 func Foo(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "bar",
+		"message": "barry",
 	})
 }
