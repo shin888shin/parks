@@ -65,6 +65,11 @@ phases:
       - echo Pushing the docker image
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo "+++> 20"
+      - ls -carlt
+      - echo "+++> 21"
+      - echo Display imageDetail.json
+      - cat imageDetail.json
       - echo Create imagedefinitions.json
       - printf '[{"name":"parks_api","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
