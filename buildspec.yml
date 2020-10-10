@@ -11,6 +11,9 @@ phases:
       # - aws --version
       # - apt-get update -y
       # - echo Install ended
+    # runtime-versions:
+    #     docker: 18
+
     finally:
       - echo This always runs - install finally
   pre_build:
@@ -43,6 +46,15 @@ phases:
       - echo Building docker image
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      # # https://stackoverflow.com/questions/58849736/did-not-find-the-image-definition-file-imagedefinitions-json
+      # - echo Building imagedefinitions.json
+      # - apt-get install jq -y
+      # - ContainerName="parks_api"
+      # - ImageURI=$(cat imageDetail.json | jq -r '.ImageURI')
+      # - printf '[{"name":"CONTAINER_NAME","imageUri":"IMAGE_URI"}]' > imagedefinitions.json
+      # - sed -i -e "s|CONTAINER_NAME|$ContainerName|g" imagedefinitions.json
+      # - sed -i -e "s|IMAGE_URI|$ImageURI|g" imagedefinitions.json
+      # - cat imagedefinitions.json
       - echo Build ended
     finally:
       - echo This always runs - build finally
@@ -53,11 +65,11 @@ phases:
       - echo Pushing the docker image
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - printf '[{"name":"parks-codebuild","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > image_output.json
-      - cat image_output.json
+      - echo Create imagedefinitions.json
+      - printf '[{"name":"parks-codebuild","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
       - echo Completed the post_build phase
 
 artifacts:
   files:
-    - '**/*'
-  name: joel-$COMMIT_HASH-$(date +%Y-%m-%d)
+    - imagedefinitions.json
