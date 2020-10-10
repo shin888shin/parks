@@ -8,6 +8,8 @@ import (
 func MapUrls(r *gin.Engine) {
 	r.GET("/ping", controllers.Ping)
 	r.GET("/foo", controllers.Foo)
+	r.GET("/hostname", controllers.Hostname)
+
 	// r.GET("/parks/search", controllers.SearchParks)
 	r.POST("/parks", controllers.CreatePark)
 	r.GET("/parks", controllers.GetAllParks)
