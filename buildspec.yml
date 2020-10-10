@@ -73,7 +73,7 @@ phases:
       - docker images
       - echo "+++> 23"
       - echo Create imagedefinitions.json
-      - printf '[{"name":"parks","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' $REPOSITORY_URI, $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
       - echo Completed the post_build phase
 
