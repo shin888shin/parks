@@ -56,3 +56,8 @@ phases:
       - printf '[{"name":"parks-codebuild","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > image_output.json
       - cat image_output.json
       - echo Completed the post_build phase
+
+artifacts:
+  files:
+    - '**/*'
+  name: joel-$COMMIT_HASH-$(date +%Y-%m-%d)
