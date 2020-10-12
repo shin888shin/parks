@@ -75,7 +75,7 @@ phases:
       - docker images
       - echo "+++> 23"
       - echo Create imagedefinitions.json
-      - printf '[{"name":"tulip-default-parks","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' $REPOSITORY_URI:latest, $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
       - echo Completed the post_build phase
 
