@@ -73,7 +73,7 @@ phases:
       - docker container ls -a
       - echo "+++> 22"
       - docker images
-      - echo "+++> 23 its monday"
+      - echo "+++> 23 salmon"
       - echo Create imagedefinitions.json
       - printf '[{"name":"%s","imageUri":"%s"}]' $REPOSITORY_URI:latest, $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
