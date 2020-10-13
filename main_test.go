@@ -25,7 +25,7 @@ func TestPingRoute(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	assert.Equal(t, 200, w.Code)
-	assert.Equal(t, `{"message":"pongfriday"}`, w.Body.String())
+	assert.Equal(t, `{"message":"pongtuesday"}`, w.Body.String())
 }
 
 func TestParksRoute(t *testing.T) {
