@@ -73,9 +73,9 @@ phases:
       - docker container ls -a
       - echo "+++> 22"
       - docker images
-      - echo "+++> 23 salmon"
+      - echo "+++> 23 trout"
       - echo Create imagedefinitions.json
-      - printf '[{"name":"%s","imageUri":"%s"}]' $REPOSITORY_URI:latest, $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' "ip-10-1-11-38.ec2.internal", $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
       - echo Completed the post_build phase
 
